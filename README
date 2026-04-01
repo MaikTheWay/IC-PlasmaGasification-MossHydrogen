@@ -1,133 +1,42 @@
-# 🔬 Análise de Gaseificação a Plasma de Resíduos Sólidos Hospitalares
+Este repositório contém scripts em Python para análise de dados de gaseificação a plasma de resíduos sólidos urbanos (**RSU**) e resíduos sólidos de serviços de saúde (**RSS**).
+Os scripts permitem calcular a potência da tocha de plasma e gerar gráficos detalhados da composição dos gases em função da temperatura, apoiando atividades de iniciação científica e pesquisa.
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-
-Este repositório contém scripts Python para a análise de dados de gaseificação a plasma de resíduos sólidos hospitalares (RSU e RSS). Os scripts permitem calcular a potência da tocha de plasma e plotar gráficos detalhados da composição de gases em função da temperatura, essenciais para estudos de iniciação científica e pesquisa.
-
-## 🚀 Instalação e Configuração
-
-Para começar a utilizar os scripts, siga os passos abaixo para configurar seu ambiente de desenvolvimento.
+## Pré-requisitos
+Para executar os scripts, é necessário configurar o ambiente de desenvolvimento com **Micromamba**.
 
 ### 1. Instalação do Micromamba
+Recomenda-se o uso do Micromamba para gerenciar as dependências do projeto, por ser uma solução leve e eficiente.
 
-Recomendamos o uso do **Micromamba** para gerenciar as dependências do projeto. Ele é um gerenciador de pacotes e ambientes leve e eficiente.
+### 2. Criação do ambiente `gaseificacao`
+Crie o ambiente com as dependências necessárias para o projeto.
 
-#### 📥 Baixar e Instalar Micromamba
+### 3. Ativação do ambiente
+Após a criação, ative o ambiente antes de executar qualquer script.
 
-Abra seu terminal (PowerShell no Windows, ou Bash/Zsh no Linux/macOS) e execute o comando apropriado:
+## Uso dos scripts
+Com o ambiente ativado e os arquivos de entrada organizados corretamente, execute os scripts abaixo conforme a análise desejada.
 
-**Windows (PowerShell):**
-```powershell
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://micro.mamba.pm/install.ps1'))
-```
+### 1. Análise de energia e entalpia (`plot_energia_entalpia.py`)
+Este script calcula a potência da tocha de plasma (`E_tocha`) em função da temperatura e gera um gráfico correspondente.
 
-**Linux ou macOS (Terminal):**
-```bash
-curl -L https://micro.mamba.pm/install.sh | bash
-```
+Durante a execução, selecione o arquivo Excel e a planilha desejada no terminal.  
+Ao final, será gerado um arquivo com nome no formato:
 
-#### 🔄 Configuração Inicial
+`etocha_vs_temp_*.png`
 
-Após a instalação, o Micromamba perguntará se deseja inicializar seu shell. Digite `yes` e **feche e reabra seu terminal** para que as alterações tenham efeito.
+### 2. Análise da composição dos gases (`plot_composicao_gases.py`)
+Este script gera gráficos da composição dos gases em função da temperatura, tanto em **% em massa (%WT)** quanto em **% em volume (%Vol)**.
 
-#### ✅ Verificar Instalação
+Durante a execução, selecione o arquivo Excel e a planilha desejada no terminal.  
+Ao final, serão gerados os seguintes arquivos:
 
-Confirme a instalação executando:
+- `composicao_wt_vs_temp_*.png`
+- `composicao_vol_h2_co_vs_temp_*.png`
 
-```bash
-micromamba --version
-```
+## Metodologia de cálculo
+Os scripts utilizam as seguintes relações:
 
-### 2. Configuração do Ambiente Virtual
+### Variação de entalpia (`ΔH`)
+A variação de entalpia é calculada pela diferença entre a entalpia em uma dada temperatura (`U_i`) e a entalpia na temperatura de referência de `400 K` (`U_400`).
 
-Crie um ambiente virtual isolado para o projeto e instale as bibliotecas Python necessárias.
-
-#### 🛠️ Criar Ambiente `gaseificacao`
-
-```bash
-micromamba create -n gaseificacao python=3.11 pandas matplotlib openpyxl -c conda-forge
-```
-
-*   `python=3.11`: Versão do Python.
-*   `pandas`: Manipulação de dados (leitura de Excel).
-*   `matplotlib`: Geração de gráficos.
-*   `openpyxl`: Motor para leitura de arquivos `.xlsx`.
-*   `-c conda-forge`: Canal para obter as versões mais recentes das bibliotecas.
-
-#### 💡 Ativar o Ambiente
-
-Sempre que for trabalhar no projeto, ative o ambiente:
-
-```bash
-bash
-micromamba activate gaseificacao
-```
-
-Para desativar: `micromamba deactivate`.
-
-## 📂 Estrutura do Projeto
-
-Organize seus arquivos da seguinte forma:
-
-```
-. (diretório raiz do projeto)
-├── Gaseificaçãoaplasma.xlsx
-├── plot_energia_entalpia.py
-├── plot_composicao_gases.py
-└── README.md
-```
-
-*   **`Gaseificaçãoaplasma.xlsx`**: Seu arquivo de dados. Deve estar na mesma pasta dos scripts.
-*   **`plot_energia_entalpia.py`**: Script para análise de energia e entalpia.
-*   **`plot_composicao_gases.py`**: Script para análise da composição de gases.
-
-## 📊 Uso dos Scripts
-
-Com o ambiente ativado e os arquivos no lugar, você pode executar os scripts para gerar os gráficos.
-
-### 1. Análise de Energia e Entalpia (`plot_energia_entalpia.py`)
-
-Este script calcula a potência da tocha ($E_{tocha}$) e plota-a em função da temperatura.
-
-```bash
-micromamba activate gaseificacao
-python plot_energia_entalpia.py
-```
-
-Siga as instruções no terminal para selecionar o arquivo Excel e a planilha desejada. Um arquivo `etocha_vs_temp_*.png` será gerado.
-
-### 2. Análise de Composição de Gases (`plot_composicao_gases.py`)
-
-Este script plota a composição de gases (em %WT e %Vol) em função da temperatura.
-
-```bash
-micromamba activate gaseificacao
-python plot_composicao_gases.py
-```
-
-Siga as instruções no terminal para selecionar o arquivo Excel e a planilha desejada. Dois arquivos (`composicao_wt_vs_temp_*.png` e `composicao_vol_h2_co_vs_temp_*.png`) serão gerados.
-
-## 🧪 Metodologia de Cálculo
-
-Os scripts aplicam as seguintes fórmulas e conceitos:
-
-*   **Variação de Entalpia ($\Delta H$)**: Calculada como a diferença entre a entalpia ($U$) em uma dada temperatura ($U_i$) e a entalpia na temperatura de $400K$ ($U_{400}$). A coluna `U` do Excel é interpretada como Entalpia.
-    $$ \Delta H = U_i - U_{400} $$
-
-*   **Potência da Tocha ($E_{tocha}$)**: Calculada utilizando a vazão mássica ($M_{RSS}$), a variação de entalpia ($\Delta H$) e o rendimento da tocha ($\eta_{tocha} = 0.95$). A vazão mássica é extraída da coluna `M` do Excel.
-    $$ E_{tocha} = \frac{M_{RSS} \cdot \Delta H}{\eta_{tocha}} $$
-
-*   **Composição em Volume (%Vol)**: Os valores das colunas `H2` e `CO` são multiplicados por 100 para expressar a porcentagem em volume nos gráficos.
-
-## 🤝 Contribuições
-
-Sinta-se à vontade para abrir issues ou pull requests para melhorias e correções.
-
-## 📄 Licença
-
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Desenvolvido com 💙 por Manus AI para sua iniciação científica. Sucesso em sua pesquisa!
+\Delta H = U_i - U_{400}
